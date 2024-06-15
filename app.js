@@ -45,7 +45,17 @@ app.post("/signin", (req,res)=>{
         (response)=>{
             // res.json(response)       if we wrong email,it will give empty [].
             if (response.length>0) {
-                res.json(response)        
+                // res.json(response)
+                let dbPassword = response[0].password
+                bcrypt.compare(input.password,dbPassword,(error,isMatch)=>{
+                    if (isMatch) {
+                        res.json({"status":"success"})
+                        
+                    } else {
+                        res.json({"status":"password not matching"})        //password verified
+                        
+                    }
+                })        
             } else {
                 res.json({"status":"user not found"})          // instead of this [] it will print user not found.
             }
