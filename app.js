@@ -8,6 +8,8 @@ app.use(cors())
 app.use(express.json())
 
 app.post("/signup",(req,res)=>{
+    let input = req.body
+    console.log(input)
     res.json({"status":"success"})
 })
 
