@@ -83,6 +83,30 @@ app.post("/addRecipe",(req,res)=>{
     res.json({"status":"success"})
 })
 
+app.post("/search",(req,res)=>{
+    // res.json({"status":"success"})
+    let input = req.body
+
+    let token = req.headers["token"]
+    jwt.verify(token,"recipe-app",(error,decoded)=>{
+        if (error) {
+            res.json({"status":"unauthorised access token"})        //this will work if we do not add token in header,key and value
+        } else {
+            if (decoded) {
+                recipeModel.find(input).then(        //from here it's like normal view
+                    (data)=>{
+                        res.json(data)          //this will work if we login using token id(that means login and we have to add the token in the header section(as key value pair))
+                    }
+                ).catch(
+                    (error)=>{
+                        res.json(error)
+                    }
+                )
+            }
+        }
+    })
+})
+
 app.listen(8080,()=>{
     console.log("Server Started")
 })
