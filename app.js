@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const express = require("express")
 const cors = require("cors")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 
 
@@ -49,7 +50,14 @@ app.post("/signin", (req,res)=>{
                 let dbPassword = response[0].password
                 bcrypt.compare(input.password,dbPassword,(error,isMatch)=>{
                     if (isMatch) {
-                        res.json({"status":"success"})
+                        // res.json({"status":"success"})
+                        jwt.sign({email:input.email},"recipe-app",{expiresIn:"1d"},(error,token)=>{
+                            if (error) {
+                                res.json({"status":"unable to create token"})
+                            } else {
+                                res.json({"status":"success","userId":response[0]._id,"token":token})
+                            }
+                        })
                         
                     } else {
                         res.json({"status":"password not matching"})        //password verified
