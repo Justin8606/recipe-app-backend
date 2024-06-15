@@ -11,6 +11,8 @@ const jwt = require("jsonwebtoken")
 const users = require("./models/user")
 const {userModel} = require("./models/user")
 
+const recipe = require("./models/recipe")
+const {recipeModel} = require("./models/recipe")
 
 
 const app = express()
@@ -70,6 +72,15 @@ app.post("/signin", (req,res)=>{
         }
     ).catch()
     // res.json({"status":"success"})
+})
+
+app.post("/addRecipe",(req,res)=>{
+    let input = req.body
+    // console.log(input)
+    let recipe = new recipeModel(input)     //object id also come in terminal
+    recipe.save()
+    // console.log(recipe)
+    res.json({"status":"success"})
 })
 
 app.listen(8080,()=>{
