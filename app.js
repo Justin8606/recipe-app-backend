@@ -38,6 +38,22 @@ app.post("/signup",async(req,res)=>{
 })
 
 
+app.post("/signin", (req,res)=>{
+    let input = req.body
+    // console.log(input)
+    userModel.find({"email":input.email}).then(
+        (response)=>{
+            // res.json(response)       if we wrong email,it will give empty [].
+            if (response.length>0) {
+                res.json(response)        
+            } else {
+                res.json({"status":"user not found"})          // instead of this [] it will print user not found.
+            }
+        }
+    ).catch()
+    // res.json({"status":"success"})
+})
+
 app.listen(8080,()=>{
     console.log("Server Started")
 })
